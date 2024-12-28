@@ -7,18 +7,33 @@ const UsernameDisplay = () => {
   const [copiedBits, setCopiedBits] = useState(null);
   const [includeNumbers, setIncludeNumbers] = useState(true);
   const [capitalize, setCapitalize] = useState(true);
+  const [numOptions, setNumOptions] = useState(4);
+  const [isSpinning, setIsSpinning] = useState(false);
 
   const generateUsernames = useCallback(() => {
-    const usernameData = {
-      'Simple': { ...generateUsername(24), entropy: 24 },
-      'Standard': { ...generateUsername(28), entropy: 28 },
-      'Whatever': { ...generateUsername(32), entropy: 32 },
-      'Complex': { ...generateUsername(36), entropy: 36 },
+    setIsSpinning(true);
+    setTimeout(() => setIsSpinning(false), 500);
+    
+    const entropyLevels = {
+      'Simple': 24,
+      'Standard': 28,
+      'Whatever': 32,
+      'Complex': 36,
     };
+
+    const usernameData = {};
+    const variations = Math.floor(numOptions / 4);
+    
+    Object.entries(entropyLevels).forEach(([type, entropy]) => {
+      for (let i = 0; i < variations; i++) {
+        const suffix = i === 0 ? '' : ` ${i + 1}`;
+        usernameData[`${type}${suffix}`] = { ...generateUsername(entropy), entropy };
+      }
+    });
 
     setCopiedBits(null);
     setUsernames(usernameData);
-  }, []);
+  }, [numOptions]);
 
   const copyToClipboard = useCallback((text, type) => {
     navigator.clipboard.writeText(text);
@@ -61,70 +76,90 @@ const UsernameDisplay = () => {
   }, [includeNumbers]);
 
   return (
-    <section className="content">
-      <div className="flex flex-col md:flex-row gap-3 items-end justify-start mb-6">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={generateUsernames}
-            className="btn btn-primary text-base md:text-xl text-white"
-          >
-            <FaSyncAlt /> New usernames!
-          </button>
-          
-          <div className="flex gap-4">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={includeNumbers}
-                onChange={(e) => setIncludeNumbers(e.target.checked)}
-                className="form-checkbox"
-              />
-              <span className="text-gray-700">Include numbers</span>
-            </label>
+    <section className="content h-full">
+      <div className="sticky top-0 pt-3 bg-white z-10 pb-4 shadow-sm">
+        <div className="flex flex-col md:flex-row gap-3 items-end justify-start">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={generateUsernames}
+              className="btn btn-primary text-base md:text-xl text-white"
+            >
+              <FaSyncAlt className={`inline-block transition-transform ${isSpinning ? 'animate-spin' : ''}`} /> More
+            </button>
+            
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={includeNumbers}
+                  onChange={(e) => setIncludeNumbers(e.target.checked)}
+                  className="form-checkbox"
+                />
+                <span className="text-gray-700">Numbers</span>
+              </label>
 
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={capitalize}
-                onChange={(e) => setCapitalize(e.target.checked)}
-                className="form-checkbox"
-              />
-              <span className="text-gray-700">Capitalize words</span>
-            </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={capitalize}
+                  onChange={(e) => setCapitalize(e.target.checked)}
+                  className="form-checkbox"
+                />
+                <span className="text-gray-700">Capitalize</span>
+              </label>
+
+              <label className="flex items-center gap-2">
+                <span className="text-gray-700"></span>
+                <select
+                  value={numOptions}
+                  onChange={(e) => setNumOptions(Number(e.target.value))}
+                  className="form-select border rounded px-2 py-1"
+                >
+                  <option value={4}>4 options</option>
+                  <option value={8}>8 options</option>
+                  <option value={24}>24 options</option>
+                  <option value={48}>48 options</option>
+                </select>
+              </label>
+            </div>
           </div>
         </div>
       </div>
 
-      {Object.entries(usernames).map(([key, { username, components, entropy }]) => {
-        const displayComponents = getDisplayComponents(components);
-        return (
-          <div key={key}
-            className={`passphrase-block ${copiedBits === key ? 'copied' : ''}`}
-          >
-            <div 
-              className="relative passphrase-content mb-6 cursor-pointer" 
-              onClick={() => copyToClipboard(getDisplayUsername(components), key)}
-            >
-              <div className="flex flex-wrap gap-1">
-                {displayComponents.map((component, index) => (
-                  <span key={index} className={`${getComponentColor(component, index, displayComponents.length)} font-medium`}>
-                    {formatComponent(component, index, displayComponents.length)}
+      <div className="pt-4">
+        <div className={`grid ${numOptions > 4 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} gap-4`}>
+          {Object.entries(usernames).map(([key, { username, components, entropy }]) => {
+            const displayComponents = getDisplayComponents(components);
+            return (
+              <div key={key}
+                className={`passphrase-block ${copiedBits === key ? 'copied' : ''}`}
+              >
+                <div 
+                  className="relative passphrase-content h-full cursor-pointer" 
+                  onClick={() => copyToClipboard(getDisplayUsername(components), key)}
+                >
+                  <div className="flex flex-wrap gap-1">
+                    {displayComponents.map((component, index) => (
+                      <span key={index} className={`${getComponentColor(component, index, displayComponents.length)} font-medium`}>
+                        {formatComponent(component, index, displayComponents.length)}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="copy-button">
+                    {copiedBits === key ? <FaCheck /> : <FaRegCopy />} <span className="hidden lg:inline">{copiedBits === key ? 'Copied!' : 'Copy'}</span>
                   </span>
-                ))}
+                </div>
               </div>
-              <span className="copy-button">
-                {copiedBits === key ? <FaCheck /> : <FaRegCopy />} {copiedBits === key ? 'Copied!' : 'Copy'}
-              </span>
-            </div>
-          </div>
-        );
-      })}
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 };
 
 const UsernamePage = () => (
-  <div className="container max-w-xl mx-0 p-4">
+  <div className="container p-4">
     <h2 className="page-title">Username Generator</h2>
     <UsernameDisplay />
   </div>
