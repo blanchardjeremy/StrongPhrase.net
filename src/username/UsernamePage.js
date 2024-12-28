@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { FaRegCopy, FaCheck, FaSyncAlt } from "react-icons/fa";
+import { FaRegCopy, FaCheck } from "react-icons/fa";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { generateUsername } from './username-generator';
+import SpinButton from '../components/SpinButton';
 
 const UsernameDisplay = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,7 +12,6 @@ const UsernameDisplay = () => {
   const [includeNumbers, setIncludeNumbers] = useState(searchParams.get('numbers') !== 'false');
   const [capitalize, setCapitalize] = useState(searchParams.get('capitalize') !== 'false');
   const [numOptions, setNumOptions] = useState(Number(searchParams.get('options')) || 4);
-  const [isSpinning, setIsSpinning] = useState(false);
   const [generationCount, setGenerationCount] = useState(0);
 
   const updateUrlParams = useCallback((params) => {
@@ -27,9 +27,6 @@ const UsernameDisplay = () => {
   }, [searchParams, setSearchParams]);
 
   const generateUsernames = useCallback(() => {
-    setIsSpinning(true);
-    setTimeout(() => setIsSpinning(false), 500);
-    
     const entropyLevels = {
       'Simple': 24,
       'Standard': 28,
@@ -115,12 +112,7 @@ const UsernameDisplay = () => {
       <div className="sticky top-0 pt-3 bg-white z-10 pb-4 shadow-sm">
         <div className="flex flex-col md:flex-row gap-3 items-end justify-start">
           <div className="flex items-center gap-4">
-            <button
-              onClick={generateUsernames}
-              className="btn btn-primary text-base md:text-xl text-white"
-            >
-              <FaSyncAlt className={`inline-block transition-transform ${isSpinning ? 'animate-spin' : ''}`} /> More
-            </button>
+            <SpinButton onClick={generateUsernames}>More</SpinButton>
             
             <div className="flex gap-4">
               <label className="flex items-center gap-2 cursor-pointer">

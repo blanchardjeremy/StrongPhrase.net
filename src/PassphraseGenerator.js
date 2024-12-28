@@ -1,7 +1,9 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { timeToCrackAvg, convertTimeToReadableFormat, getPassphrase, getPrimaryGrammarLabels, getAllGrammarLabels, formatDollarToScale, avgCostToCrack } from './passphraseUtils.js';
 import HashRateSelector, { defaultHashRate } from './HashRateSelector';
-import { FaRegCopy, FaCheck, FaSyncAlt, FaInfoCircle, FaKey } from "react-icons/fa";
+import { FaRegCopy, FaCheck, FaInfoCircle, FaKey } from "react-icons/fa";
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import SpinButton from './components/SpinButton';
 
 import './PassphraseGenerator.css';
 
@@ -17,6 +19,7 @@ export const PassphraseItem = ({
   copiedBits, 
   grammarBits, 
   entropy=null,
+  generationCount,
   children
 }) => {
   return (
@@ -29,7 +32,7 @@ export const PassphraseItem = ({
       <label className="block mb-1 tracking-wide uppercase">
         <div className="flex items-center">
           <div className="label-container">
-            <span className={`font-header font-extrabold text-xl inline-block ${label}`}>{label}</span>
+            <span className={`font-bold text-md uppercase text-gray-500 inline-block ${label}`}>{label}</span>
             <span className={`ml-2 group  ${showAllGrammars ? 'hide' : ''}`}>
               <div className="tooltip mt-1" data-tip={`${entropy} bits of entropy`}>
                 <FaInfoCircle className=" text-gray-500 cursor-pointer text-base" />
@@ -47,9 +50,24 @@ export const PassphraseItem = ({
         </div>
       </label>
       <div className="relative passphrase-content mb-6" onClick={() => copyToClipboard(clipboardVersion, grammarBits)}>
-        {passphrase}
-
-        {children} {/* Render children if present */}
+        <div className="relative">
+          <TransitionGroup component={null}>
+            <CSSTransition
+              key={`${grammarBits}-${generationCount}`}
+              timeout={300}
+              classNames="username-text"
+            >
+              <div className="absolute inset-0">
+                {passphrase}
+                {children}
+              </div>
+            </CSSTransition>
+          </TransitionGroup>
+          <div className="invisible">
+            {passphrase}
+            {children}
+          </div>
+        </div>
 
         <span className="copy-button" >
           {copiedBits === grammarBits ? <FaCheck /> : <FaRegCopy />} {copiedBits === grammarBits ? 'Copied!' : 'Copy'}
@@ -70,6 +88,7 @@ export const PhraseGeneratorParent = ({
   const [hashRate, setHashRate] = useState(defaultHashRate);
   const [showHidden, setShowHidden] = useState(true);
   const [showAllGrammars, setShowAllGrammars] = useState(false);
+  const [generationCount, setGenerationCount] = useState(0);
 
   const numTotalGrammars = Object.keys(getAllGrammarLabels()).length;
 
@@ -81,11 +100,10 @@ export const PhraseGeneratorParent = ({
       newPassphrases[bits] = getPassphrase(bits);
     });
     setPassphrases(newPassphrases);
-    // Reset everything 
     setCopiedBits(null);
     setShowHidden(true);
     setPracticeInput('');
-
+    setGenerationCount(c => c + 1);
   }, [showAllGrammars, base_grammar_labels]);
 
   
@@ -117,12 +135,7 @@ export const PhraseGeneratorParent = ({
   return (
     <section className="content">
       <div className="flex flex-col md:flex-row gap-3 items-start md:items-end mb-10">
-        <button
-          onClick={generatePassphrases}
-          className="btn btn-primary text-base md:text-xl text-white mb-2 md:mb-0"
-        >
-          <FaSyncAlt /> New {type}s!
-        </button>
+        <SpinButton onClick={generatePassphrases}>New {type}s!</SpinButton>
         <HashRateSelector setHashRate={setHashRate} hashRate={hashRate} />
 
         <button 
@@ -156,6 +169,7 @@ export const PhraseGeneratorParent = ({
           copiedBits={copiedBits}  
           grammarBits={bits}  
           entropy={bits}
+          generationCount={generationCount}
         />
       ))}
 
