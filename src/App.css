@@ -72,3 +72,26 @@ footer a.link, footer a:hover.link, footer a:active.link, footer a:visited.link 
 .markdown-content p {
  @apply last:m-0;
 }
+
+/* Username animations */
+.username-text-enter {
+  opacity: 0;
+  transform: translateX(200px);
+}
+
+.username-text-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms ease-in, transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.username-text-exit {
+  opacity: 1;
+  position: absolute;
+  transform: translateX(0);
+}
+
+.username-text-exit-active {
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}

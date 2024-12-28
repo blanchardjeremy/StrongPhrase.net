@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FaRegCopy, FaCheck, FaSyncAlt } from "react-icons/fa";
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { generateUsername } from './username-generator';
 
 const UsernameDisplay = () => {
@@ -11,6 +12,7 @@ const UsernameDisplay = () => {
   const [capitalize, setCapitalize] = useState(searchParams.get('capitalize') !== 'false');
   const [numOptions, setNumOptions] = useState(Number(searchParams.get('options')) || 4);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [generationCount, setGenerationCount] = useState(0);
 
   const updateUrlParams = useCallback((params) => {
     const newParams = new URLSearchParams(searchParams);
@@ -47,6 +49,7 @@ const UsernameDisplay = () => {
 
     setCopiedBits(null);
     setUsernames(usernameData);
+    setGenerationCount(c => c + 1);
   }, [numOptions]);
 
   const copyToClipboard = useCallback((text, type) => {
@@ -163,19 +166,37 @@ const UsernameDisplay = () => {
           {Object.entries(usernames).map(([key, { username, components, entropy }]) => {
             const displayComponents = getDisplayComponents(components);
             return (
-              <div key={key}
+              <div
+                key={key}
                 className={`passphrase-block ${copiedBits === key ? 'copied' : ''}`}
               >
                 <div 
                   className="relative passphrase-content h-full cursor-pointer" 
                   onClick={() => copyToClipboard(getDisplayUsername(components), key)}
                 >
-                  <div className="flex flex-wrap gap-1">
-                    {displayComponents.map((component, index) => (
-                      <span key={index} className={`${getComponentColor(component, index, displayComponents.length)} font-medium`}>
-                        {formatComponent(component, index, displayComponents.length)}
-                      </span>
-                    ))}
+                  <div className="flex flex-wrap gap-1 relative">
+                    <TransitionGroup component={null}>
+                      <CSSTransition
+                        key={`${key}-${generationCount}`}
+                        timeout={300}
+                        classNames="username-text"
+                      >
+                        <div className="flex flex-wrap gap-1 absolute inset-0">
+                          {displayComponents.map((component, index) => (
+                            <span key={index} className={`${getComponentColor(component, index, displayComponents.length)} font-medium`}>
+                              {formatComponent(component, index, displayComponents.length)}
+                            </span>
+                          ))}
+                        </div>
+                      </CSSTransition>
+                    </TransitionGroup>
+                    <div className="invisible flex flex-wrap gap-1">
+                      {displayComponents.map((component, index) => (
+                        <span key={index} className={`${getComponentColor(component, index, displayComponents.length)} font-medium`}>
+                          {formatComponent(component, index, displayComponents.length)}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                   <span className="copy-button">
                     {copiedBits === key ? <FaCheck /> : <FaRegCopy />} <span className="hidden lg:inline">{copiedBits === key ? 'Copied!' : 'Copy'}</span>
