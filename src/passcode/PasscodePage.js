@@ -16,7 +16,7 @@ const PasscodeDisplay = () => {
   const generatePasscodes = useCallback(() => {
     const passcodeData = {
       '6 digits': getPasscodeAndEntropy(6),
-      '10 Digits': getPasscodeAndEntropy(10),
+      '10 Digits (Recommended)': getPasscodeAndEntropy(10),
     };
 
     setCopiedBits();
@@ -48,7 +48,7 @@ const PasscodeDisplay = () => {
   return (
     <section className="content">
       <div className="">
-        <div className="flex flex-col md:flex-row gap-3 items-end justify-start mb-6">
+        <div className="flex flex-col md:flex-row gap-3 items-start justify-start mb-6">
           <SpinButton onClick={generatePasscodes}>New passcodes!</SpinButton>
           <HashRateSelector setHashRate={setHashRate} hashRate={hashRate} />
         </div>
@@ -64,7 +64,7 @@ const PasscodeDisplay = () => {
             copiedId={copiedBits}
             itemId={key}
             generationCount={generationCount}
-            className="max-w-md"
+            className={`max-w-md ${key === '10 Digits (Recommended)' ? 'recommended-passcode' : ''}`}
           />
         ))}
       </div>

@@ -47,11 +47,11 @@
   @apply pt-2 pb-2 px-4  bg-gray-100 rounded-xl font-mono text-xl pr-28 border border-gray-300;
 }
 
-/* highlight when hovering */
+/* highlight when hovering or copied */
 .passphrase-content:hover,
 .copied .passphrase-content {
-  @apply bg-green-100 text-green-800 cursor-pointer;
-  border-color: rgb(145, 198, 166);
+  @apply !bg-green-100 !text-green-800 cursor-pointer;
+  border-color: rgb(145, 198, 166) !important;
 }
 
 .crack-time {
@@ -70,4 +70,19 @@
 .passphrase-content:hover .copy-button,
 .copied .copy-button {
   @apply bg-green-300
+}
+
+
+
+
+.recommended-passcode .passphrase-content {
+  @apply bg-purple-100 text-purple-800 border-purple-300
+}
+
+.recommended-passcode .label-container span {
+  @apply text-purple-800
+}
+
+.recommended-passcode .copy-button {
+  @apply bg-purple-300
 }

@@ -125,11 +125,11 @@ const UsernameDisplay = () => {
   return (
     <section className="content h-full">
       <div className="sticky top-0 pt-3 bg-white z-10 pb-4 shadow-sm">
-        <div className="flex flex-col md:flex-row gap-3 items-end justify-start">
-          <div className="flex items-center gap-4">
-            <SpinButton onClick={generateUsernames}>More</SpinButton>
-            
-            <div className="flex gap-4">
+        <div className="flex flex-row md:flex-row gap-3 items-start justify-start">
+          <SpinButton onClick={generateUsernames}>More</SpinButton>
+          
+          <div className="flex items-center gap-3 ml-3 md:gap-6 md:ml-6">
+            <div className="flex flex-col gap-0">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
@@ -149,20 +149,20 @@ const UsernameDisplay = () => {
                 />
                 <span className="text-gray-700">Capitalize</span>
               </label>
-
-              <label className="flex items-center gap-2">
-                <span className="text-gray-700"></span>
-                <select
-                  value={numOptions}
-                  onChange={handleNumOptionsChange}
-                  className="form-select border rounded px-2 py-1"
-                >
-                  {optionsChoices.map(({ value, label }) => (
-                    <option key={value} value={value}>{label}</option>
-                  ))}
-                </select>
-              </label>
             </div>
+
+            <label className="flex items-center gap-2">
+              <span className="text-gray-700"></span>
+              <select
+                value={numOptions}
+                onChange={handleNumOptionsChange}
+                className="form-select border rounded px-2 py-1"
+              >
+                {optionsChoices.map(({ value, label }) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
+              </select>
+            </label>
           </div>
         </div>
       </div>

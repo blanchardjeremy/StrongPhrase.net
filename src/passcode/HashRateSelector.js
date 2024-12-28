@@ -1,8 +1,8 @@
 import React from 'react';
 
 const hardwareOptions = {
-  "Expected law enforcement crack rate": 25,
-  "Speculative high-end crack rate": 250,
+  "Expected law enforcement rate": 25,
+  "Speculative high-end rate": 250,
   // "Best consumer hardware": 2.6e6, // 2.6 million
 };
 
@@ -34,7 +34,7 @@ const HashRateSelector = ({ hashRate, setHashRate }) => {
         id="hashRateSelect"
         value={hashRate}
         onChange={handleChange}
-        className="border rounded-lg select select-bordered select-sm w-auto"
+        className="border rounded-lg select select-bordered select-sm max-w-[80vw] text-sm"
       >
         {Object.entries(hardwareOptions).map(([key, value]) => (
           <option key={value} value={value}>
