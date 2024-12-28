@@ -1,86 +1,16 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { timeToCrackAvg, convertTimeToReadableFormat, getPassphrase, getPrimaryGrammarLabels, getAllGrammarLabels, formatDollarToScale, avgCostToCrack } from './passphraseUtils.js';
 import HashRateSelector, { defaultHashRate } from './HashRateSelector';
-import { FaRegCopy, FaCheck, FaInfoCircle, FaKey } from "react-icons/fa";
+import { FaKey } from "react-icons/fa";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import SpinButton from './components/SpinButton';
+import CopyableItem from './components/CopyableItem';
 
 import './PassphraseGenerator.css';
-
-export const PassphraseItem = ({ 
-  passphrase, 
-  label, 
-  time, 
-  cost, 
-  showAllGrammars, 
-  showHidden, 
-  copyToClipboard, 
-  clipboardVersion,
-  copiedBits, 
-  grammarBits, 
-  entropy=null,
-  generationCount,
-  children
-}) => {
-  return (
-    <div key={grammarBits} 
-      className={`passphrase-block ${
-        copiedBits === grammarBits ? 'copied' : 
-        (copiedBits && !showHidden) ? 'hide' : ''
-      }`}
-    >
-      <label className="block mb-1 tracking-wide uppercase">
-        <div className="flex items-center">
-          <div className="label-container">
-            <span className={`font-bold text-md uppercase text-gray-500 inline-block ${label}`}>{label}</span>
-            <span className={`ml-2 group  ${showAllGrammars ? 'hide' : ''}`}>
-              <div className="tooltip mt-1" data-tip={`${entropy} bits of entropy`}>
-                <FaInfoCircle className=" text-gray-500 cursor-pointer text-base" />
-              </div>
-            </span>
-          </div>
-          <div className="crack-time-info">
-            <div className="crack-stats-container">
-              <span className="crack-time ml-2">Avg time to crack: <em>{time}</em></span>
-            </div>
-            <div className="crack-stats-container">
-              <span className="crack-time ml-2">Avg cost to crack: <em>{cost}</em></span>
-            </div>
-          </div>
-        </div>
-      </label>
-      <div className="relative passphrase-content mb-6" onClick={() => copyToClipboard(clipboardVersion, grammarBits)}>
-        <div className="relative">
-          <TransitionGroup component={null}>
-            <CSSTransition
-              key={`${grammarBits}-${generationCount}`}
-              timeout={300}
-              classNames="username-text"
-            >
-              <div className="absolute inset-0">
-                {passphrase}
-                {children}
-              </div>
-            </CSSTransition>
-          </TransitionGroup>
-          <div className="invisible">
-            {passphrase}
-            {children}
-          </div>
-        </div>
-
-        <span className="copy-button" >
-          {copiedBits === grammarBits ? <FaCheck /> : <FaRegCopy />} {copiedBits === grammarBits ? 'Copied!' : 'Copy'}
-        </span>
-      </div>
-    </div>
-  );
-}
 
 export const PhraseGeneratorParent = ({ 
   type='passphrase', 
   base_grammar_labels=null, 
-  ItemComponent=PassphraseItem,
 }) => {
   const [passphrases, setPassphrases] = useState({});
   const [practiceInput, setPracticeInput] = useState('');
@@ -152,35 +82,32 @@ export const PhraseGeneratorParent = ({
         >
           Show hidden passphrases
         </button>
-        
       </div>
 
-      
       {crackTimes.map(({ bits, label, time, cost }) => (
-        <ItemComponent 
-          passphrase={passphrases[bits]}  
-          label={label} 
-          time={time} 
-          cost={cost}  
-          showAllGrammars={showAllGrammars} 
-          showHidden={showHidden} 
+        <CopyableItem
+          key={bits}
+          content={passphrases[bits]}
+          label={label}
+          stats={[
+            { label: 'Avg time to crack', value: time },
+            { label: 'Avg cost to crack', value: cost }
+          ]}
+          infoBits={bits}
           copyToClipboard={copyToClipboard}
-          clipboardVersion={passphrases[bits]} 
-          copiedBits={copiedBits}  
-          grammarBits={bits}  
-          entropy={bits}
+          copiedId={copiedBits}
+          itemId={bits}
           generationCount={generationCount}
+          hideWhenOthersCopied={true}
+          showHidden={showHidden}
         />
       ))}
-
 
       <div className="card bg-blue-100 w-full shadow-xl mt-12">
         <div className="card-body form-control text-secondary">
           <span className="block font-header font-extrabold text-2xl mt-0 pt-0 label label-text text-secondary">Practice typing the phrase</span>
           <label className="input input-bordered flex items-center gap-2 p-2 border rounded font-mono text-xl input-secondary">
-          
             <FaKey className="text-base" />
-            
             <input
               type="text"
               value={practiceInput}
@@ -199,8 +126,7 @@ const PassphraseGenerator = () => {
     <PhraseGeneratorParent
       type="passphrase"
       base_grammar_labels={getPrimaryGrammarLabels()}
-      />
-
+    />
   )
 }
 

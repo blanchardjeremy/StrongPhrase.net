@@ -1,9 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { FaRegCopy, FaCheck } from "react-icons/fa";
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { generateUsername } from './username-generator';
 import SpinButton from '../components/SpinButton';
+import CopyableItem from '../components/CopyableItem';
 
 const UsernameDisplay = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -89,6 +88,15 @@ const UsernameDisplay = () => {
     return wordColors[index % wordColors.length];
   }, [includeNumbers]);
 
+  const renderUsernameContent = useCallback((components) => {
+    const displayComponents = getDisplayComponents(components);
+    return displayComponents.map((component, index) => (
+      <span key={index} className={`${getComponentColor(component, index, displayComponents.length)} font-medium`}>
+        {formatComponent(component, index, displayComponents.length)}
+      </span>
+    ));
+  }, [getDisplayComponents, getComponentColor, formatComponent]);
+
   const handleIncludeNumbersChange = (e) => {
     const value = e.target.checked;
     setIncludeNumbers(value);
@@ -155,48 +163,26 @@ const UsernameDisplay = () => {
 
       <div className="pt-4">
         <div className={`grid ${numOptions > 4 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} gap-4`}>
-          {Object.entries(usernames).map(([key, { username, components, entropy }]) => {
-            const displayComponents = getDisplayComponents(components);
-            return (
-              <div
-                key={key}
-                className={`passphrase-block ${copiedBits === key ? 'copied' : ''}`}
-              >
-                <div 
-                  className="relative passphrase-content h-full cursor-pointer" 
-                  onClick={() => copyToClipboard(getDisplayUsername(components), key)}
-                >
-                  <div className="flex flex-wrap gap-1 relative">
-                    <TransitionGroup component={null}>
-                      <CSSTransition
-                        key={`${key}-${generationCount}`}
-                        timeout={300}
-                        classNames="username-text"
-                      >
-                        <div className="flex flex-wrap gap-1 absolute inset-0">
-                          {displayComponents.map((component, index) => (
-                            <span key={index} className={`${getComponentColor(component, index, displayComponents.length)} font-medium`}>
-                              {formatComponent(component, index, displayComponents.length)}
-                            </span>
-                          ))}
-                        </div>
-                      </CSSTransition>
-                    </TransitionGroup>
-                    <div className="invisible flex flex-wrap gap-1">
-                      {displayComponents.map((component, index) => (
-                        <span key={index} className={`${getComponentColor(component, index, displayComponents.length)} font-medium`}>
-                          {formatComponent(component, index, displayComponents.length)}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <span className="copy-button">
-                    {copiedBits === key ? <FaCheck /> : <FaRegCopy />} <span className="hidden lg:inline">{copiedBits === key ? 'Copied!' : 'Copy'}</span>
-                  </span>
-                </div>
+          {Object.entries(usernames).map(([key, { components, entropy }]) => (
+            <CopyableItem
+              key={key}
+              content={getDisplayUsername(components)}
+              label={key}
+              infoBits={entropy}
+              copyToClipboard={copyToClipboard}
+              copiedId={copiedBits}
+              itemId={key}
+              generationCount={generationCount}
+              renderContentOnly={false}
+              showLabel={false}
+              noMarginBottom={true}
+              hideTextBelowLg={true}
+            >
+              <div className="flex flex-wrap gap-1">
+                {renderUsernameContent(components)}
               </div>
-            );
-          })}
+            </CopyableItem>
+          ))}
         </div>
       </div>
     </section>
