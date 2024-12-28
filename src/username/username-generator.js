@@ -2,13 +2,13 @@ import { getPassphrase } from '../passphraseUtils';
 
 const usernameGrammars = {
   // 2 concrete words + number
-  24: "adj:8| |noun-concrete:8| |number:8",
+  24: "adj:8| |noun-concrete:8| |number:6",
   // 2 animate words + number
-  28: "adj-animate:9| |noun-animate:9| |number:8",
+  28: "adj-animate:9| |noun-animate:9| |number:6",
   // 3 concrete words + number
-  32: "adj:8| |noun-concrete:8| |verb-s:8| |number:8",
+  32: "adj:8| |noun-concrete:8| |verb-s:8| |number:6",
   // 3 animate words + number
-  36: "adj-animate:9| |noun-animate:9| |verb-s:9| |number:8"
+  36: "adj-animate:9| |noun-animate:9| |verb-s:9| |number:6"
 };
 
 export const generateUsername = (bits = 24) => {

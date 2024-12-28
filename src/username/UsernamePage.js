@@ -6,7 +6,7 @@ const UsernameDisplay = () => {
   const [usernames, setUsernames] = useState({});
   const [copiedBits, setCopiedBits] = useState(null);
   const [includeNumbers, setIncludeNumbers] = useState(true);
-  const [capitalize, setCapitalize] = useState(false);
+  const [capitalize, setCapitalize] = useState(true);
 
   const generateUsernames = useCallback(() => {
     const usernameData = {
