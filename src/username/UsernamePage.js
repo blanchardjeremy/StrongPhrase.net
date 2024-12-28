@@ -13,6 +13,20 @@ const UsernameDisplay = () => {
   const [numOptions, setNumOptions] = useState(Number(searchParams.get('options')) || 4);
   const [generationCount, setGenerationCount] = useState(0);
 
+  const entropyLevels = {
+    'a': 24,
+    'b': 28,
+    'c': 30,
+    'd': 32,
+  };
+
+  const baseOptionsCount = Object.keys(entropyLevels).length;
+  const optionMultiples = [1, 2, 4, 8]; // How many of each type to show
+  const optionsChoices = optionMultiples.map(multiple => ({
+    value: baseOptionsCount * multiple,
+    label: `${baseOptionsCount * multiple} options`
+  }));
+
   const updateUrlParams = useCallback((params) => {
     const newParams = new URLSearchParams(searchParams);
     Object.entries(params).forEach(([key, value]) => {
@@ -26,15 +40,8 @@ const UsernameDisplay = () => {
   }, [searchParams, setSearchParams]);
 
   const generateUsernames = useCallback(() => {
-    const entropyLevels = {
-      'Simple': 24,
-      'Standard': 28,
-      'Whatever': 32,
-      'Complex': 36,
-    };
-
     const usernameData = {};
-    const variations = Math.floor(numOptions / 4);
+    const variations = Math.floor(numOptions / Object.keys(entropyLevels).length);
     
     Object.entries(entropyLevels).forEach(([type, entropy]) => {
       for (let i = 0; i < variations; i++) {
@@ -112,7 +119,7 @@ const UsernameDisplay = () => {
   const handleNumOptionsChange = (e) => {
     const value = Number(e.target.value);
     setNumOptions(value);
-    updateUrlParams({ options: value === 4 ? null : value });
+    updateUrlParams({ options: value === optionsChoices[0].value ? null : value });
   };
 
   return (
@@ -150,10 +157,9 @@ const UsernameDisplay = () => {
                   onChange={handleNumOptionsChange}
                   className="form-select border rounded px-2 py-1"
                 >
-                  <option value={4}>4 options</option>
-                  <option value={8}>8 options</option>
-                  <option value={24}>24 options</option>
-                  <option value={48}>48 options</option>
+                  {optionsChoices.map(({ value, label }) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
                 </select>
               </label>
             </div>
