@@ -18,7 +18,7 @@ const CopyableItem = ({
   renderContentOnly = true, // Whether to render the plain content
   showLabel = true,        // Whether to show the label section
   noMarginBottom = false,  // Whether to remove bottom margin
-  hideTextBelowLg = false, // Whether to hide copy button text below lg breakpoint
+  hideCopyTextBelowLg = false, // Whether to hide copy button text below lg breakpoint
   children                 // Optional additional content
 }) => {
   const isHidden = hideWhenOthersCopied && copiedId && copiedId !== itemId && !showHidden;
@@ -76,7 +76,7 @@ const CopyableItem = ({
 
         <span className="copy-button">
           {copiedId === itemId ? <FaCheck /> : <FaRegCopy />} 
-          <span className={hideTextBelowLg ? "hidden lg:inline" : "inline"}>
+          <span className={hideCopyTextBelowLg ? "hidden lg:inline" : "inline"}>
             {copiedId === itemId ? 'Copied!' : 'Copy'}
           </span>
         </span>

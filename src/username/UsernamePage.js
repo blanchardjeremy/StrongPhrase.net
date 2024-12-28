@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { generateUsername } from './username-generator';
-import SpinButton from '../components/SpinButton';
 import CopyableItem from '../components/CopyableItem';
+import PageToolbar from '../components/PageToolbar';
 
 const UsernameDisplay = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -124,48 +124,44 @@ const UsernameDisplay = () => {
 
   return (
     <section className="content h-full">
-      <div className="sticky top-0 pt-3 bg-white z-10 pb-4 shadow-sm">
-        <div className="flex flex-row md:flex-row gap-3 items-start justify-start">
-          <SpinButton onClick={generateUsernames}>More</SpinButton>
-          
-          <div className="flex items-center gap-3 ml-3 md:gap-6 md:ml-6">
-            <div className="flex flex-col gap-0">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={includeNumbers}
-                  onChange={handleIncludeNumbersChange}
-                  className="form-checkbox"
-                />
-                <span className="text-gray-700">Numbers</span>
-              </label>
+      <PageToolbar
+        onGenerate={generateUsernames}
+        generateButtonText="More"
+        isSticky={true}
+        className="items-center"
+      >
+        <div className="flex items-center gap-4">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={includeNumbers}
+              onChange={handleIncludeNumbersChange}
+              className="form-checkbox"
+            />
+            <span className="text-gray-700">Numbers</span>
+          </label>
 
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={capitalize}
-                  onChange={handleCapitalizeChange}
-                  className="form-checkbox"
-                />
-                <span className="text-gray-700">Capitalize</span>
-              </label>
-            </div>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={capitalize}
+              onChange={handleCapitalizeChange}
+              className="form-checkbox"
+            />
+            <span className="text-gray-700">Capitalize</span>
+          </label>
 
-            <label className="flex items-center gap-2">
-              <span className="text-gray-700"></span>
-              <select
-                value={numOptions}
-                onChange={handleNumOptionsChange}
-                className="form-select border rounded px-2 py-1"
-              >
-                {optionsChoices.map(({ value, label }) => (
-                  <option key={value} value={value}>{label}</option>
-                ))}
-              </select>
-            </label>
-          </div>
+          <select
+            value={numOptions}
+            onChange={handleNumOptionsChange}
+            className="form-select border rounded px-2 py-1"
+          >
+            {optionsChoices.map(({ value, label }) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
         </div>
-      </div>
+      </PageToolbar>
 
       <div className="pt-4">
         <div className={`grid ${numOptions > 4 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} gap-4`}>
@@ -182,7 +178,7 @@ const UsernameDisplay = () => {
               renderContentOnly={false}
               showLabel={false}
               noMarginBottom={true}
-              hideTextBelowLg={true}
+              hideCopyTextBelowLg={true}
             >
               <div className="flex flex-wrap gap-1">
                 {renderUsernameContent(components)}
@@ -197,7 +193,7 @@ const UsernameDisplay = () => {
 
 const UsernamePage = () => (
   <div className="container p-4">
-    <h2 className="page-title">Username Generator</h2>
+    <h2 className="page-title">Random Username Generator</h2>
     <UsernameDisplay />
   </div>
 );

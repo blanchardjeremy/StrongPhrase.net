@@ -44,7 +44,7 @@
 }
 
 .passphrase-content {
-  @apply pt-2 pb-2 px-4  bg-gray-100 rounded-xl font-mono text-xl pr-28 border border-gray-300;
+  @apply pt-2 pb-2 px-4  bg-gray-100 rounded-xl font-mono text-xl pr-10 lg:pr-28 border border-gray-300;
 }
 
 /* highlight when hovering or copied */

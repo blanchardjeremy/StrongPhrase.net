@@ -2,14 +2,14 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { timeToCrackAvg, convertTimeToReadableFormat } from './../passphraseUtils.js';
 import { getPasscodeAndEntropy } from './passcodeUtils.js';
 import PasscodeFAQ from './PasscodeFAQ.js'
-import HashRateSelector, { defaultHashRate } from './HashRateSelector.js';
-import SpinButton from '../components/SpinButton';
+import HashRateSelector, { defaultHashRates } from '../HashRateSelector';
 import CopyableItem from '../components/CopyableItem';
+import PageToolbar from '../components/PageToolbar';
 
 const PasscodeDisplay = () => {
   const [passcodes, setPasscodes] = useState({});
   const [copiedBits, setCopiedBits] = useState(null);
-  const [hashRate, setHashRate] = useState(defaultHashRate);
+  const [hashRate, setHashRate] = useState(defaultHashRates.passcode);
   const [generationCount, setGenerationCount] = useState(0);
 
   const generatePasscodes = useCallback(() => {
@@ -47,10 +47,12 @@ const PasscodeDisplay = () => {
   return (
     <section className="content">
       <div className="">
-        <div className="flex flex-row gap-3 items-start justify-start mb-6">
-          <SpinButton onClick={generatePasscodes}>New passcodes!</SpinButton>
-          <HashRateSelector setHashRate={setHashRate} hashRate={hashRate} />
-        </div>
+        <PageToolbar
+          onGenerate={generatePasscodes}
+          generateButtonText="New passcodes!"
+        >
+          <HashRateSelector setHashRate={setHashRate} hashRate={hashRate} mode="passcode" />
+        </PageToolbar>
 
         {crackTimes.map(({ key, label, entropy, time }) => (
           <CopyableItem

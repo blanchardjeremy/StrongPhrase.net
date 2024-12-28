@@ -42,7 +42,7 @@ const App = () => {
                   <li><NavLink activeClassName="active" to="/">Passphrase</NavLink></li>
                   <li><NavLink activeClassName="active" to="/passcode">Phone Passcode</NavLink></li>
                   <li><NavLink activeClassName="active" to="/username">Username</NavLink></li>
-                  <li><NavLink activeClassName="active" to="/table">Crack Time/Cost</NavLink></li>
+                  <li><NavLink activeClassName="active" to="/table">Cracking Times</NavLink></li>
                 </ul>
               </div>
             </div>

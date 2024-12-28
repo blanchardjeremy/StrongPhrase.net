@@ -1,10 +1,9 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { timeToCrackAvg, convertTimeToReadableFormat, getPassphrase, getPrimaryGrammarLabels, getAllGrammarLabels, formatDollarToScale, avgCostToCrack } from './passphraseUtils.js';
-import HashRateSelector, { defaultHashRate } from './HashRateSelector';
+import HashRateSelector, { defaultHashRates } from './HashRateSelector';
 import { FaKey } from "react-icons/fa";
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import SpinButton from './components/SpinButton';
 import CopyableItem from './components/CopyableItem';
+import PageToolbar from './components/PageToolbar';
 
 import './PassphraseGenerator.css';
 
@@ -15,7 +14,7 @@ export const PhraseGeneratorParent = ({
   const [passphrases, setPassphrases] = useState({});
   const [practiceInput, setPracticeInput] = useState('');
   const [copiedBits, setCopiedBits] = useState(null);
-  const [hashRate, setHashRate] = useState(defaultHashRate);
+  const [hashRate, setHashRate] = useState(defaultHashRates.passphrase);
   const [showHidden, setShowHidden] = useState(true);
   const [showAllGrammars, setShowAllGrammars] = useState(false);
   const [generationCount, setGenerationCount] = useState(0);
@@ -64,9 +63,13 @@ export const PhraseGeneratorParent = ({
 
   return (
     <section className="content">
-      <div className="flex flex-col md:flex-row gap-3 items-start md:items-end mb-10">
-        <SpinButton onClick={generatePassphrases}>New {type}s!</SpinButton>
-        <HashRateSelector setHashRate={setHashRate} hashRate={hashRate} />
+      <PageToolbar
+        onGenerate={generatePassphrases}
+        generateButtonText={`New ${type}s!`}
+        className="mb-10"
+        isSticky={true}
+      >
+        <HashRateSelector setHashRate={setHashRate} hashRate={hashRate} mode="passphrase" />
 
         <button 
           onClick={() => setShowAllGrammars(!showAllGrammars)} 
@@ -82,7 +85,7 @@ export const PhraseGeneratorParent = ({
         >
           Show hidden passphrases
         </button>
-      </div>
+      </PageToolbar>
 
       {crackTimes.map(({ bits, label, time, cost }) => (
         <CopyableItem
@@ -100,6 +103,7 @@ export const PhraseGeneratorParent = ({
           generationCount={generationCount}
           hideWhenOthersCopied={true}
           showHidden={showHidden}
+          hideCopyTextBelowLg={true}
         />
       ))}
 

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { convertTimeToReadableFormat, timeToCrackAvg, avgCostToCrack, formatDollarToScale } from "./passphraseUtils.js";
-import HashRateSelector, { defaultHashRate } from './HashRateSelector';
+import HashRateSelector, { defaultHashRates } from './HashRateSelector';
 import { Link } from "react-router-dom";
+import PageToolbar from './components/PageToolbar';
 
 const costOptions = {
   "$0.001": 0.001,
@@ -19,7 +20,7 @@ const formatNumber = (number) => {
 };
 
 const EntropyCrackTimeTable = () => {
-  const [hashRate, setHashRate] = useState(defaultHashRate);
+  const [hashRate, setHashRate] = useState(defaultHashRates.passphrase);
   const [costPerGuess32, setCostPerGuess32] = useState(defaultCostToCrack);
   const [showAllSteps, setShowAllSteps] = useState(false);
 
@@ -57,7 +58,21 @@ const EntropyCrackTimeTable = () => {
     <div className="container mx-auto p-4">
       <h2 className="page-title">Time and Cost to Crack</h2>
 
-      <div className="flex flex-row gap-4">
+
+      <div className="card card-body p-6 bg-gray-100 mt-4 flex flex-grow max-w-3xl text-sm">
+        <p className="mt-0">
+          See the <Link to="/" className="link link-hover">FAQ on the main page</Link> for more information on time to crack and cost to crack calculations.
+        </p>
+      </div>
+
+      <div className="card card-body p-6 bg-green-100 mt-4 flex flex-grow max-w-3xl text-sm">
+        <p className="mt-0">
+          <strong>Takeaway:</strong> <u>45 bits</u> should be your minimum and most people don't need more than <u>65 bits</u>.
+        </p>
+      </div>
+
+
+      <PageToolbar generateButtonText="" isSticky={true} hideButton={true}>
         <HashRateSelector setHashRate={setHashRate} hashRate={hashRate} />
 
         <div>
@@ -81,21 +96,9 @@ const EntropyCrackTimeTable = () => {
             {showAllSteps ? 'Show every 5 steps' : 'Show all entropy steps'}
           </button>
         </div>
-      </div>
+      </PageToolbar>
 
-      <div className="card card-body p-6 bg-gray-100 mt-4 flex flex-grow max-w-3xl text-sm">
-        <p className="mt-0">
-          See the <Link to="/" className="link link-hover">FAQ on the main page</Link> for more information on time to crack and cost to crack calculations.
-        </p>
-      </div>
-
-      <div className="card card-body p-6 bg-green-100 mt-4 flex flex-grow max-w-3xl text-sm">
-        <p className="mt-0">
-          <strong>Takeaway:</strong> <u>45 bits</u> should be your minimum and most people don't need more than <u>65 bits</u>.
-        </p>
-      </div>
-
-      <div className="overflow-x-auto mt-8">
+      <div className="overflow-x-auto mt-2">
         <table className="table table-zebra w-auto">
           <thead>
             <tr>
