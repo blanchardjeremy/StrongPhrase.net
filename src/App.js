@@ -1,5 +1,5 @@
 import React, { } from 'react';
-import { HashRouter as Router, Route, Routes, Link, NavLink } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
 import './App.css';
 import PassphraseGenerator from './PassphraseGenerator.js';
 import PasswordSchemeCard from './PasswordSchemeCard.js';
@@ -10,6 +10,7 @@ import logo from './img/logo.png';
 import EntropyCrackTimeTable from './EntropyCrackTable';
 import EntropyPerCharTable from './EntropyPerChar.js';
 import ScrollToTop from './helpers/ScrollToTop';
+import UsernamePage from './username/UsernamePage.js';
 
 
 const Home = () => (
@@ -40,8 +41,8 @@ const App = () => {
               <div className="navbar-start flex w-full">
                 <ul className="menu menu-horizontal">
                   <li><NavLink activeClassName="active" to="/">Passphrase</NavLink></li>
-                  {/* <li><NavLink activeClassName="active" to="/acronym">Acronym Passphrase</NavLink></li> */}
                   <li><NavLink activeClassName="active" to="/passcode">Phone Passcode</NavLink></li>
+                  <li><NavLink activeClassName="active" to="/username">Username</NavLink></li>
                   <li><NavLink activeClassName="active" to="/table">Crack Time/Cost</NavLink></li>
                 </ul>
               </div>
@@ -58,6 +59,7 @@ const App = () => {
             <Route path="/passcode" element={<PasscodePage />} />
             <Route path="/table" element={<EntropyCrackTimeTable />} />
             <Route path="/entropy-per-char" element={<EntropyPerCharTable />} />
+            <Route path="/username" element={<UsernamePage />} />
           </Routes>
 
         </div>

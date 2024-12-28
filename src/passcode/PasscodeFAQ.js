@@ -1,9 +1,7 @@
 import React from 'react';
-import { timeToCrackAvg, convertTimeToReadableFormat, formatDollarToScale, avgCostToCrack } from './../passphraseUtils.js';
+import { timeToCrackAvg, convertTimeToReadableFormat } from './../passphraseUtils.js';
 import FAQItem from './../FAQItem';
 import MarkdownCustom from '../MarkdownCustom.js';
-
-const BASE_COST_PER_32 = 6.0;
 
 const formatNumber = (number, precision=3) => {
   let rounded = Number(number.toPrecision(precision));
