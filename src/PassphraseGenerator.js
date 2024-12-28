@@ -90,8 +90,8 @@ export const PhraseGeneratorParent = ({
           content={passphrases[bits]}
           label={label}
           stats={[
-            { label: 'Avg time to crack', value: time },
-            { label: 'Avg cost to crack', value: cost }
+            { label: 'to crack (avg)', value: time },
+            { label: 'to crack (avg)', value: cost }
           ]}
           infoBits={bits}
           copyToClipboard={copyToClipboard}

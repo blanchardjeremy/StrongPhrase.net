@@ -46,7 +46,7 @@ const CopyableItem = ({
               <div className="crack-time-info">
                 {stats.map(({ label, value }, index) => (
                   <div key={index} className="crack-stats-container">
-                    <span className="crack-time ml-2">{label}: <em>{value}</em></span>
+                    <span className="crack-time ml-2"><em>{value}</em> {label}</span>
                   </div>
                 ))}
               </div>

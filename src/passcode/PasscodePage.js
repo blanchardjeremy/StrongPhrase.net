@@ -58,7 +58,7 @@ const PasscodeDisplay = () => {
             key={key}
             content={passcodes[key].passcode}
             label={label}
-            stats={[{ label: 'Avg time to crack', value: time }]}
+            stats={[{ label: 'to crack (avg)', value: time }]}
             infoBits={entropy}
             copyToClipboard={copyToClipboard}
             copiedId={copiedBits}
