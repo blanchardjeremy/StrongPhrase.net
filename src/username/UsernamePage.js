@@ -1,14 +1,28 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { FaRegCopy, FaCheck, FaSyncAlt } from "react-icons/fa";
 import { generateUsername } from './username-generator';
 
 const UsernameDisplay = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [usernames, setUsernames] = useState({});
   const [copiedBits, setCopiedBits] = useState(null);
-  const [includeNumbers, setIncludeNumbers] = useState(true);
-  const [capitalize, setCapitalize] = useState(true);
-  const [numOptions, setNumOptions] = useState(4);
+  const [includeNumbers, setIncludeNumbers] = useState(searchParams.get('numbers') !== 'false');
+  const [capitalize, setCapitalize] = useState(searchParams.get('capitalize') !== 'false');
+  const [numOptions, setNumOptions] = useState(Number(searchParams.get('options')) || 4);
   const [isSpinning, setIsSpinning] = useState(false);
+
+  const updateUrlParams = useCallback((params) => {
+    const newParams = new URLSearchParams(searchParams);
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === null) {
+        newParams.delete(key);
+      } else {
+        newParams.set(key, value);
+      }
+    });
+    setSearchParams(newParams);
+  }, [searchParams, setSearchParams]);
 
   const generateUsernames = useCallback(() => {
     setIsSpinning(true);
@@ -75,6 +89,24 @@ const UsernameDisplay = () => {
     return wordColors[index % wordColors.length];
   }, [includeNumbers]);
 
+  const handleIncludeNumbersChange = (e) => {
+    const value = e.target.checked;
+    setIncludeNumbers(value);
+    updateUrlParams({ numbers: value === true ? null : 'false' });
+  };
+
+  const handleCapitalizeChange = (e) => {
+    const value = e.target.checked;
+    setCapitalize(value);
+    updateUrlParams({ capitalize: value === true ? null : 'false' });
+  };
+
+  const handleNumOptionsChange = (e) => {
+    const value = Number(e.target.value);
+    setNumOptions(value);
+    updateUrlParams({ options: value === 4 ? null : value });
+  };
+
   return (
     <section className="content h-full">
       <div className="sticky top-0 pt-3 bg-white z-10 pb-4 shadow-sm">
@@ -92,7 +124,7 @@ const UsernameDisplay = () => {
                 <input
                   type="checkbox"
                   checked={includeNumbers}
-                  onChange={(e) => setIncludeNumbers(e.target.checked)}
+                  onChange={handleIncludeNumbersChange}
                   className="form-checkbox"
                 />
                 <span className="text-gray-700">Numbers</span>
@@ -102,7 +134,7 @@ const UsernameDisplay = () => {
                 <input
                   type="checkbox"
                   checked={capitalize}
-                  onChange={(e) => setCapitalize(e.target.checked)}
+                  onChange={handleCapitalizeChange}
                   className="form-checkbox"
                 />
                 <span className="text-gray-700">Capitalize</span>
@@ -112,7 +144,7 @@ const UsernameDisplay = () => {
                 <span className="text-gray-700"></span>
                 <select
                   value={numOptions}
-                  onChange={(e) => setNumOptions(Number(e.target.value))}
+                  onChange={handleNumOptionsChange}
                   className="form-select border rounded px-2 py-1"
                 >
                   <option value={4}>4 options</option>
