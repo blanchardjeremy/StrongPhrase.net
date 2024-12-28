@@ -29,7 +29,7 @@ export const getPrimaryGrammarLabels = () => {
 // Re-export so I don't have to change it everywhere after refactoring
 export const grammars = grammers_int;
 
-
+export const DEFAULT_GRAMMARS = grammars;
 
 // We use $0.56 per 2^32 guesses currently
 export const avgCostToCrack = (bits, costPerGuess32=0.56) => {
@@ -117,7 +117,7 @@ let getBitLength = function(bits) {
   return bitLength;
 }
 
-export const getPassphrase = (bits) => {        
+export const getPassphrase = (bits, grammars = DEFAULT_GRAMMARS) => {        
   if(!cryptoAvailable()) {
       return "Error: Your browser cannot generate secure passphrases";
   }

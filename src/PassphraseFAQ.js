@@ -53,7 +53,7 @@ const EntropyPerCharTable = () => {
 
     Object.entries(labels).forEach(([key, label]) => {
       if (data[key]) {
-        const { avg, min, max, sample } = data[key];
+        const { avg, sample } = data[key];
         const sampleText = sample ? ` \`${sample}\`` : "";
         markdown += `| StrongPhrase (${key} bits)  | **${avg}** | ${sampleText} |\n`;
       }

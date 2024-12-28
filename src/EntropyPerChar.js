@@ -31,6 +31,7 @@ const EntropyPerCharTable = () => {
 
       const jsonDict = {};
 
+      // eslint-disable-next-line no-restricted-syntax, no-unused-vars
       for (const [bits, label] of Object.entries(grammarLabels)) {
         const entropies = [];
         let samplePassphrase = '';
