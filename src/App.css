@@ -19,7 +19,7 @@
 }
 
 .page-title {
-  @apply font-header text-3xl mb-6
+  @apply font-header text-lg md:text-3xl mb-6
 }
 
 a.link, a:hover.link , a:active.link , a:visited.link {

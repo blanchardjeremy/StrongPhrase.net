@@ -13,7 +13,7 @@ const SpinButton = ({ onClick, className = "", children }) => {
   return (
     <button
       onClick={handleClick}
-      className={`btn btn-primary text-base md:text-xl text-white ${className}`}
+      className={`btn btn-primary text-base btn-sm md:btn-lg md:text-xl text-white ${className}`}
     >
       <FaSyncAlt className={`inline-block transition-transform ${isSpinning ? 'animate-spin' : ''}`} /> {children}
     </button>

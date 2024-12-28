@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { timeToCrackAvg, convertTimeToReadableFormat } from './../passphraseUtils.js';
 import { getPasscodeAndEntropy } from './passcodeUtils.js';
 import PasscodeFAQ from './PasscodeFAQ.js'
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import HashRateSelector, { defaultHashRate } from './HashRateSelector.js';
 import SpinButton from '../components/SpinButton';
 import CopyableItem from '../components/CopyableItem';
@@ -48,7 +47,7 @@ const PasscodeDisplay = () => {
   return (
     <section className="content">
       <div className="">
-        <div className="flex flex-col md:flex-row gap-3 items-start justify-start mb-6">
+        <div className="flex flex-row gap-3 items-start justify-start mb-6">
           <SpinButton onClick={generatePasscodes}>New passcodes!</SpinButton>
           <HashRateSelector setHashRate={setHashRate} hashRate={hashRate} />
         </div>
