@@ -30,8 +30,8 @@ const CopyableItem = ({
       } ${isHidden ? 'hide' : ''} ${className}`}
     >
       {showLabel && (
-        <label className="block mb-1 tracking-wide uppercase">
-          <div className="flex items-center">
+        <label className="block mb-1 tracking-wide">
+          <div className="flex flex-col md:flex-row md:items-center space-x-3">
             <div className="label-container">
               <span className={`font-bold text-md uppercase text-gray-500 inline-block ${label}`}>{label}</span>
               {showInfoIcon && infoBits && (
@@ -43,11 +43,12 @@ const CopyableItem = ({
               )}
             </div>
             {stats.length > 0 && (
-              <div className="crack-time-info">
+              <div className="text-gray-500 italic text-sm mt-1 md:mt-0">
                 {stats.map(({ label, value }, index) => (
-                  <div key={index} className="crack-stats-container">
-                    <span className="crack-time ml-2"><em>{value}</em> {label}</span>
-                  </div>
+                  <React.Fragment key={index}>
+                    {index > 0 && <span className="mx-2">•</span>}
+                    <span>{value} {label}</span>
+                  </React.Fragment>
                 ))}
               </div>
             )}

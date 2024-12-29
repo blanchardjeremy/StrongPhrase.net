@@ -22,7 +22,7 @@
 
 .label-container {
   /* width: 180px; */
-  @apply flex items-center justify-between;
+  @apply flex items-center;
 }
 
 .crack-time-info {
@@ -63,13 +63,15 @@
 }
 
 .copy-button {
-  @apply px-2 py-0 rounded-none rounded-tr-xl rounded-bl-lg absolute right-0 text-sm uppercase font-sans bg-gray-300 tracking-wide top-0 flex items-center cursor-pointer btn btn-xs border-0;
+  @apply px-2 py-0 rounded-none rounded-tr-xl rounded-bl-lg absolute right-0 text-sm uppercase font-sans;
+  @apply bg-gray-300 tracking-wide top-0 flex items-center cursor-pointer btn btn-xs border-0;
 }
 
 
 .passphrase-content:hover .copy-button,
-.copied .copy-button {
-  @apply bg-green-300
+.copied .copy-button,
+.recommended-passcode.copied .copy-button {
+  @apply !bg-green-300
 }
 
 
