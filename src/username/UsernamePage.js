@@ -179,6 +179,7 @@ const UsernameDisplay = () => {
               showLabel={false}
               noMarginBottom={true}
               hideCopyTextBelowLg={true}
+              className="max-w-md"
             >
               <div className="flex flex-wrap gap-1">
                 {renderUsernameContent(components)}
