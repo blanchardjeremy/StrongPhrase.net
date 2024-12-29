@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.3f9c6595.css",
-    "main.js": "/static/js/main.a85da732.js",
+    "main.css": "/static/css/main.7e8422c1.css",
+    "main.js": "/static/js/main.a82a572b.js",
     "static/media/RobotoMono-Italic-VariableFont_wght.woff2": "/static/media/RobotoMono-Italic-VariableFont_wght.965026153fe4d1f19029.woff2",
     "static/media/RobotoMono-VariableFont_wght.woff2": "/static/media/RobotoMono-VariableFont_wght.2003415ce076bb911ac5.woff2",
     "static/media/Roboto-BlackItalic.woff2": "/static/media/Roboto-BlackItalic.74a49feb441ff349ee79.woff2",
@@ -27,11 +27,11 @@
     "static/media/CourierPrime-Regular.woff2": "/static/media/CourierPrime-Regular.f771e36de1c902a4c6c4.woff2",
     "static/media/logo.png": "/static/media/logo.0f16c1b0317cd10880e1.png",
     "index.html": "/index.html",
-    "main.3f9c6595.css.map": "/static/css/main.3f9c6595.css.map",
-    "main.a85da732.js.map": "/static/js/main.a85da732.js.map"
+    "main.7e8422c1.css.map": "/static/css/main.7e8422c1.css.map",
+    "main.a82a572b.js.map": "/static/js/main.a82a572b.js.map"
   },
   "entrypoints": [
-    "static/css/main.3f9c6595.css",
-    "static/js/main.a85da732.js"
+    "static/css/main.7e8422c1.css",
+    "static/js/main.a82a572b.js"
   ]
 }
