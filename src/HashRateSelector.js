@@ -44,7 +44,7 @@ const HashRateSelector = ({ hashRate, setHashRate, mode = 'passphrase' }) => {
         id="hashRateSelect"
         value={hashRate}
         onChange={handleChange}
-        className="border rounded-lg select select-bordered select-sm max-w-[80vw] w-auto"
+        className="border rounded-lg select select-bordered select-sm max-w-full w-auto"
       >
         {Object.entries(options).map(([key, value]) => (
           <option key={value} value={value}>

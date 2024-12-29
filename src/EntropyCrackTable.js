@@ -80,7 +80,7 @@ const EntropyCrackTimeTable = () => {
           <select 
             value={costPerGuess32} 
             onChange={handleCostChange} 
-            className="select select-bordered w-auto max-w-xs select-sm"
+            className="select select-bordered w-auto select-sm max-w-full"
           >
             {Object.entries(costOptions).map(([label, value]) => (
               <option key={value} value={value}>{label}</option>

@@ -50,6 +50,12 @@ const PageToolbar = ({
         </div>
         <div className="space-y-6">
           {children}
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="w-full mt-4 btn btn-primary text-white"
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>
