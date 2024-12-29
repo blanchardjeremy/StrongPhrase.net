@@ -1,4 +1,3 @@
-
 .passphrase-header {
   @apply flex items-center mb-12
 }
@@ -64,7 +63,7 @@
 
 .copy-button {
   @apply px-2 py-0 rounded-none rounded-tr-xl rounded-bl-lg absolute right-0 text-sm uppercase font-sans;
-  @apply bg-gray-300 tracking-wide top-0 flex items-center cursor-pointer btn btn-xs border-0;
+  @apply bg-gray-300 tracking-wide top-0 cursor-pointer btn btn-xs border-0;
 }
 
 
