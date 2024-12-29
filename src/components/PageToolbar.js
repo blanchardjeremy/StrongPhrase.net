@@ -69,7 +69,7 @@ const PageToolbar = ({
 
   const containerClasses = `
     flex flex-row gap-3 items-start justify-start
-    ${isSticky ? 'sticky top-0 pt-3 bg-white z-10 pb-4 shadow-sm' : 'mb-6'}
+    ${isSticky ? 'sticky top-0 py-4 bg-white z-10' : 'mb-3'}
     ${className}
   `.trim();
 

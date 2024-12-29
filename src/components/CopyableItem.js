@@ -53,11 +53,11 @@ const CopyableItem = ({
                 )}
               </div>
               {stats.length > 0 && (
-                <div className="text-gray-500 italic text-sm mt-1 md:mt-0">
+                <div className="text-gray-500 text-sm mt-1 md:mt-0">
                   {stats.map(({ label, value }, index) => (
                     <React.Fragment key={index}>
                       {index > 0 && <span className="mx-2">•</span>}
-                      <span>{value} {label}</span>
+                      <span><span className="font-bold">{value}</span> {label}</span>
                     </React.Fragment>
                   ))}
                 </div>
