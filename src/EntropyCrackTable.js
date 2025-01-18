@@ -73,7 +73,7 @@ const EntropyCrackTimeTable = () => {
 
 
       <PageToolbar generateButtonText="" isSticky={true} hideButton={true}>
-        <HashRateSelector setHashRate={setHashRate} hashRate={hashRate} />
+        <HashRateSelector setHashRate={setHashRate} hashRate={hashRate} mode="all" />
 
         <div>
           <label className="label label-text">$ Cost per 2^32 guesses:</label>

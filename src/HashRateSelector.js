@@ -1,21 +1,32 @@
 import React from 'react';
 
 export const hardwareOptions = {
+  passcode: {
+    "Expected law enforcement rate": 25,
+    "Speculative high-end rate": 250
+  },
   passphrase: {
     "Standard consumer hardware": 184000, // 184,000
     "Best consumer hardware": 2.6e6, // 2.6 million
     "Nation state (NSA, etc.)": 1.9e12, // 1.9 trillion
     "Far future nation state": 1e15 // 2 quadrillion
   },
-  passcode: {
-    "Expected law enforcement rate": 25,
-    "Speculative high-end rate": 250
+  get all() {
+    const prefixedPasscode = Object.entries(this.passcode).reduce((acc, [key, value]) => {
+      acc[`Phone only: ${key}`] = value;
+      return acc;
+    }, {});
+    return {
+      ...prefixedPasscode,
+      ...this.passphrase
+    };
   }
 };
 
 export const defaultHashRates = {
+  passcode: Object.values(hardwareOptions.passcode)[0],
   passphrase: Object.values(hardwareOptions.passphrase)[1],
-  passcode: Object.values(hardwareOptions.passcode)[0]
+  all: Object.values(hardwareOptions.passphrase)[1], // Assume passphrase is our main focus
 };
 
 const formatGuessRate = (value) => {
@@ -29,6 +40,7 @@ const formatGuessRate = (value) => {
   return `${value.toLocaleString()} guesses/sec`;
 };
 
+// Mode can be 'passphrase' or 'passcode' or 'all'
 const HashRateSelector = ({ hashRate, setHashRate, mode = 'passphrase' }) => {
   const handleChange = (e) => {
     const selectedValue = Number(e.target.value);
